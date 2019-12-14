@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "lib": [
+            "es2020.string"
+        ],
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "target": "es6",
+        "noImplicitAny": true,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "outDir": "dist",
+        "baseUrl": "."
+    },
+    "include": [
+        "src/**/*"
+    ]
+}
