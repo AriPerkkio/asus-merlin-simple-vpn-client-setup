@@ -1,0 +1,24 @@
+{
+    "name": "asus-merlin-simple-vpn-client-setup-api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "build": "tsc",
+        "build:watch": "tsc -w",
+        "dev": "nodemon --watch ../../dist/packages/api ../../dist/packages/api/src/index.js",
+        "start": "node ../../dist/packages/api/src/index.js",
+        "debug": "node --nolazy --inspect-brk=9229 ../../dist/packages/api/src/index.js"
+    },
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "ssh2": "^0.8.7"
+    },
+    "devDependencies": {
+        "@types/body-parser": "^1.17.1",
+        "@types/express": "^4.17.2",
+        "@types/node": "^12.12.17",
+        "@types/ssh2": "^0.5.39"
+    }
+}

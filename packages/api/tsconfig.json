@@ -1,0 +1,19 @@
+{
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "preserveConstEnums": true,
+        "strictNullChecks": true,
+        "sourceMap": true,
+        "allowJs": true,
+        "module": "commonjs",
+        "target": "es5",
+        "outDir": "../../dist",
+        "moduleResolution": "node",
+        "downlevelIteration": true,
+        "lib": [
+            "es2015",
+            "es2020.string"
+        ],
+        "baseUrl": "./"
+    }
+}

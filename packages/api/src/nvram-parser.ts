@@ -32,11 +32,14 @@ export const parseClients = (clientText: string | null): Client[] => {
     const clients: Client[] = [];
 
     for (const match of matches) {
+        const { groups } = match || {};
+        const { name, ip, target, type } = groups || {};
+
         clients.push({
-            name: match.groups.name,
-            ip: match.groups.ip,
-            target: match.groups.target,
-            type: match.groups.type,
+            name,
+            ip,
+            target,
+            type,
         });
     }
 

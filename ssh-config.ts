@@ -1,4 +1,4 @@
-import { Configuration } from './src/types';
+import { Configuration } from './packages/api/src/types';
 
 export default {
     username: 'ADD-USERNAME',

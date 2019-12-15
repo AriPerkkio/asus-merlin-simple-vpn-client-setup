@@ -1,6 +1,7 @@
 import { Client } from 'ssh2';
 import fs from 'fs';
-import config from 'config';
+
+import config from '../../../ssh-config';
 import { SSHConfiguration } from './types';
 
 const newlineRegex = /\n/g;
@@ -11,7 +12,7 @@ export default class SshClient {
     constructor() {
         this.configuration = {
             ...config,
-            privateKey: fs.readFileSync('./ssh-key'),
+            privateKey: fs.readFileSync('../../ssh-key'),
         };
     }
 
