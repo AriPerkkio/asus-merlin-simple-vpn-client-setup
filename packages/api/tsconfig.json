@@ -1,19 +1,24 @@
 {
-    "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "preserveConstEnums": true,
         "strictNullChecks": true,
         "sourceMap": true,
         "allowJs": true,
         "module": "commonjs",
-        "target": "es5",
-        "outDir": "../../dist",
+        "target": "es6",
+        "outDir": "dist",
         "moduleResolution": "node",
         "downlevelIteration": true,
         "lib": [
             "es2015",
             "es2020.string"
         ],
-        "baseUrl": "./"
-    }
+        "baseUrl": "./",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "noImplicitAny": true,
+    },
+    "include": [
+        "src/**/*"
+    ]
 }

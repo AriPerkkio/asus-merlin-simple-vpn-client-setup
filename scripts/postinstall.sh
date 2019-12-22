@@ -1,3 +1,4 @@
 #!/bin/bash
 
-git update-index --assume-unchanged ssh-config.ts
+echo "Setting git to ignore ssh-config"
+git update-index --assume-unchanged packages/api/src/ssh-config.ts

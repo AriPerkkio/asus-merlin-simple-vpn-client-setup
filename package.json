@@ -6,6 +6,9 @@
         "packages/api",
         "packages/ui"
     ],
+    "scripts": {
+        "postinstall": "./scripts/postinstall.sh"
+    },
     "main": "index.js",
     "repository": "https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup.git",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",

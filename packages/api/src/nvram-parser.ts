@@ -1,15 +1,16 @@
-import { Client } from './types';
+import { Client, ConnectionState } from './types';
 
-export const parseState = (state: string | null): string => {
-    if (state == null || state === '') return 'ERROR';
+export const parseState = (state: string | null): ConnectionState => {
+    if (state == null || state === '') return ConnectionState.UNKNOWN;
 
     switch (state.toString()) {
         case '0':
-            return 'DISCONNECTED';
+            return ConnectionState.DISCONNECTED;
         case '2':
-            return 'CONNECTED';
+            return ConnectionState.CONNECTED;
         default:
-            return `TODO MAP STATE ${state.toString}`;
+            console.warn(`No value for connection state ${state} known.`);
+            return ConnectionState.UNKNOWN;
     }
 };
 
