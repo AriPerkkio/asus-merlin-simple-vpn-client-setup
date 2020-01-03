@@ -2,7 +2,7 @@ import express from 'express';
 import Api from './api';
 
 const app = express();
-const port = 3000;
+const port = 3001;
 
 const validateId = (id: number): { error: string } | undefined => {
     if (id < 1 || 5 < id) {

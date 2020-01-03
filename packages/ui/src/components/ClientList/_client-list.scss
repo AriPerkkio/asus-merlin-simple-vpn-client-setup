@@ -1,0 +1,76 @@
+.client-list {
+    &-header {
+        color: $color-fg;
+        text-transform: uppercase;
+        font-size: 1.5rem;
+        font: $font-secondary;
+        font-weight: 600;
+        margin: 1.5rem 2rem;
+    }
+
+    &-item {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin: 0 2rem 0.5rem;
+
+        &:not(:first-child) {
+            border-top: 1px solid $color-fg;
+            padding-top: 1rem;
+        }
+
+        &-name {
+            flex-basis: 50%;
+            min-width: 50%;
+        }
+
+        &-state {
+            flex-basis: 50%;
+            min-width: 50%;
+            text-align: right;
+
+            &--connected {
+            }
+            &--disconnected {
+            }
+        }
+
+        &-toggle {
+            margin-left: auto;
+            margin-top: 0.5rem;
+        }
+
+        &-devices {
+            flex-basis: 100%;
+
+            li:not(:first-child) dl {
+                border-top: 1px solid rgba($color-fg, 0.2);
+                padding-top: 0.5rem;
+            }
+
+            &-list {
+                display: flex;
+                max-width: 50%;
+                flex-wrap: wrap;
+                margin-bottom: 0.5rem;
+
+                dt,
+                dd {
+                    overflow-wrap: break-word;
+                    margin-top: 0.5rem;
+                }
+
+                dd {
+                    flex-basis: 30%;
+                    max-width: 30%;
+                }
+
+                dt {
+                    flex-basis: 70%;
+                    max-width: 70%;
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
