@@ -9,16 +9,12 @@
         "outDir": "dist",
         "moduleResolution": "node",
         "downlevelIteration": true,
-        "lib": [
-            "es2015",
-            "es2020.string"
-        ],
+        "lib": ["es2015", "es2020.string"],
         "baseUrl": "./",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
+        "types": ["express", "body-parser", "node", "ssh2"]
     },
-    "include": [
-        "src/**/*"
-    ]
+    "include": ["./src/**/*"]
 }

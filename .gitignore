@@ -2,3 +2,4 @@ ssh-key*
 node_modules
 dist
 .vscode
+build

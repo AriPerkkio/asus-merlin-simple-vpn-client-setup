@@ -11,9 +11,14 @@ const validateId = (id: number): { error: string } | undefined => {
 };
 
 /**
+ * Serve static files from ui folder
+ */
+app.use(express.static('build/ui'));
+
+/**
  * Get list of VPN clients and their states
  */
-app.get('/vpn-clients', (req, res) => {
+app.get('/api/vpn-clients', (req, res) => {
     Api.getVpnClients()
         .then(clients => res.json(clients))
         .catch(error => res.status(500).json(error));
@@ -22,7 +27,7 @@ app.get('/vpn-clients', (req, res) => {
 /**
  * Activate given VPN client
  */
-app.get('/vpn-clients/:id/activate', (req, res) => {
+app.get('/api/vpn-clients/:id/activate', (req, res) => {
     const id: number = parseInt(req.params.id);
     const validationErrors = validateId(id);
 
@@ -38,7 +43,7 @@ app.get('/vpn-clients/:id/activate', (req, res) => {
 /**
  * Deactivate given VPN client
  */
-app.get('/vpn-clients/:id/deactivate', (req, res) => {
+app.get('/api/vpn-clients/:id/deactivate', (req, res) => {
     const id: number = parseInt(req.params.id);
     const errors = validateId(id);
 

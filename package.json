@@ -7,7 +7,9 @@
         "packages/ui"
     ],
     "scripts": {
-        "postinstall": "./scripts/postinstall.sh"
+        "postinstall": "./scripts/postinstall.sh",
+        "build": "./scripts/build.sh",
+        "start": "node build/index.js"
     },
     "main": "index.js",
     "repository": "https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup.git",
