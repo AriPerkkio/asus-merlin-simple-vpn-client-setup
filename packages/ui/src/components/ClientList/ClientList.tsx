@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import Api from 'api';
+import { useClients } from 'hooks/useClients';
 import {
     VPNClient,
     Client,
@@ -9,11 +10,7 @@ import {
 const BASE_CLASS = 'client-list';
 
 const ClientList: React.FC = () => {
-    const [clients, setClients] = useState<VPNClient[]>([]);
-
-    useEffect(() => {
-        Api.getVPNClients().then(setClients);
-    }, []);
+    const { clients, isLoading, error } = useClients();
 
     return (
         <section className={BASE_CLASS}>
@@ -21,12 +18,20 @@ const ClientList: React.FC = () => {
                 <h2>VPN Clients</h2>
             </header>
 
+            {isLoading && 'Loading...'}
+            {error && 'Error'}
+
             <ul>{clients.map(ClientListItem)}</ul>
         </section>
     );
 };
 
-const ClientListItem = ({ id, name, state, clients }: VPNClient) => {
+const ClientListItem: React.FC<VPNClient> = ({
+    id,
+    name,
+    state,
+    clients,
+}: VPNClient) => {
     const isActivated = state === 'CONNECTED'; // ConnectionState.CONNECTED: Cannot access ambient const enums -error
 
     const buttonText = isActivated ? 'Deactivate' : 'Activate';
@@ -56,7 +61,7 @@ const ClientListItem = ({ id, name, state, clients }: VPNClient) => {
     );
 };
 
-const DeviceSetup = ({ name, ip, target, type }: Client) => (
+const DeviceSetup: React.FC<Client> = ({ name, ip, target, type }: Client) => (
     <li key={ip}>
         <dl className={`${BASE_CLASS}-item-devices-list`}>
             <dd>Name</dd>

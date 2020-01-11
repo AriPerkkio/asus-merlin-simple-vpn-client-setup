@@ -3,6 +3,11 @@ import { parseState, parseClients } from './nvram-parser';
 import { VPNClient, ConnectionState, ErrorType } from './types';
 
 const MAX_ACTIVE_CLIENTS = 3;
+const POLL_INTERVAL_MS = 2000;
+const POLL_COUNT = 10;
+
+const waitPollInterval = (): Promise<void> =>
+    new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
 
 class Api {
     private ssh: SSHClient;
@@ -28,7 +33,7 @@ class Api {
      * Activate given VPN client
      * @param id VPN client's ID
      */
-    public async activeClient(id: number): Promise<ErrorType | string> {
+    public async activeClient(id: number): Promise<ErrorType | VPNClient> {
         const countOfActiveClients = await this.getCountOfActiveClients();
 
         if (countOfActiveClients >= MAX_ACTIVE_CLIENTS) {
@@ -41,25 +46,43 @@ class Api {
             return ErrorType.ERROR_CLIENT_NOT_DISCONNECTED;
         }
 
-        const [result] = await this.ssh.execute(`service start_vpnclient${id}`);
+        await this.ssh.execute(`service start_vpnclient${id}`);
 
-        return result;
+        for (let i = 0; i < POLL_COUNT; i++) {
+            await waitPollInterval();
+            const info = await this.getVpnClientInfo(id);
+
+            if (info.state === ConnectionState.CONNECTED) {
+                return info;
+            }
+        }
+
+        return ErrorType.ERROR_CLIENT_DEACTIVATION_TIMEOUT;
     }
 
     /**
      * Deactivate given VPN client
      * @param id VPN client's ID
      */
-    public async deactivateClient(id: number): Promise<ErrorType | string> {
+    public async deactivateClient(id: number): Promise<ErrorType | VPNClient> {
         const { state } = await this.getVpnClientInfo(id);
 
         if (state !== ConnectionState.CONNECTED) {
             return ErrorType.ERROR_CLIENT_NOT_CONNECTED;
         }
 
-        const [result] = await this.ssh.execute(`service stop_vpnclient${id}`);
+        await this.ssh.execute(`service stop_vpnclient${id}`);
 
-        return result;
+        for (let i = 0; i < POLL_COUNT; i++) {
+            await waitPollInterval();
+            const info = await this.getVpnClientInfo(id);
+
+            if (info.state === ConnectionState.DISCONNECTED) {
+                return info;
+            }
+        }
+
+        return ErrorType.ERROR_CLIENT_DEACTIVATION_TIMEOUT;
     }
 
     private async getVpnClientInfo(id: number): Promise<VPNClient> {

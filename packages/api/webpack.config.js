@@ -1,7 +1,7 @@
 const path = require('path');
 
-module.exports = {
-    mode: 'development',
+module.exports = (_, { mode }) => ({
+    mode,
     entry: './src/index.ts',
     output: {
         path: path.resolve(__dirname, 'dist'),
@@ -11,6 +11,7 @@ module.exports = {
     optimization: {
         minimize: false,
     },
+    watch: mode === 'development',
     module: {
         rules: [
             {
@@ -24,4 +25,4 @@ module.exports = {
         extensions: ['.ts', '.mjs', '.js'],
         modules: ['node_modules', './'],
     },
-};
+});

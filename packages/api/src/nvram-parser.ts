@@ -1,11 +1,14 @@
 import { Client, ConnectionState } from './types';
 
+// Status code mapping: https://github.com/RMerl/asuswrt-merlin/blob/9f14d213d07fa36da459424a699bfe85f15b2286/release/src/router/www/Advanced_VPNStatus.asp#L136
 export const parseState = (state: string | null): ConnectionState => {
     if (state == null || state === '') return ConnectionState.UNKNOWN;
 
     switch (state.toString()) {
         case '0':
             return ConnectionState.DISCONNECTED;
+        case '1':
+            return ConnectionState.CONNECTING;
         case '2':
             return ConnectionState.CONNECTED;
         default:
