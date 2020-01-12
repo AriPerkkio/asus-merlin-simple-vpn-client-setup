@@ -1,4 +1,3 @@
-/* eslint-disable */
 const proxy = require('http-proxy-middleware');
 const mockData = require('./mock-data.json');
 

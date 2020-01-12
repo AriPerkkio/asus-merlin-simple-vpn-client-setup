@@ -37,8 +37,6 @@ const createSetState = <StateType>(
         ? reducer(previousState, value as BaseActionType)
         : { ...state, ...value };
 
-    console.log('Value', value, 'Next state', state);
-
     subscribers.forEach(updateSubscriber(previousState, state));
 };
 

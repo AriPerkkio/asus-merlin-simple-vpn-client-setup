@@ -15,7 +15,7 @@ body,
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: $color-fg;
+    background-color: $color-secondary;
 
     @import 'App';
     @import 'components/ClientList/client-list';

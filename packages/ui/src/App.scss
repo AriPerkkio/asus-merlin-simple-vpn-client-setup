@@ -1,6 +1,6 @@
 .app {
     &-header {
-        color: $color-bg;
+        color: $color-primary;
         font-family: $font-primary;
         font-size: 2rem;
         text-transform: uppercase;
@@ -10,7 +10,7 @@
     &-content {
         margin: 1rem;
         overflow-y: scroll;
-        background-color: $color-bg;
+        background-color: $color-primary;
         max-width: 35rem;
     }
 }
