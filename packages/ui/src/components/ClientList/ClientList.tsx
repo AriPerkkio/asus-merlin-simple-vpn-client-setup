@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import { useClients } from 'hooks/useClients';
 import {
@@ -24,8 +25,18 @@ const ClientList: React.FC = () => {
                 <h2>VPN Clients</h2>
             </header>
 
-            {isLoading && 'Loading...'}
-            {error && `Error: ${error}`}
+            {isLoading && (
+                <div className={`${BASE_CLASS}--loading`} role='alert'>
+                    Loading
+                </div>
+            )}
+
+            {error && (
+                <div className={`${BASE_CLASS}--error`} role='alert'>
+                    Error:
+                    <div>{error.toString()}</div>
+                </div>
+            )}
 
             <ul>
                 {clients.map(client => (
@@ -55,18 +66,22 @@ const ClientListItem: React.FC<ClientListItemProps> = ({
     onDeactivate,
 }: ClientListItemProps) => {
     const isActivated = state === ('CONNECTED' as ConnectionState);
+    const isLoading = state === 'CONNECTING' || state === 'DISCONNECTING';
 
     const buttonText = isActivated ? 'Deactivate' : 'Activate';
     const onClick = isActivated ? onDeactivate : onActivate;
-    const isLoading = state === 'CONNECTING' || state === 'DISCONNECTING';
 
     return (
         <li key={id} className={`${BASE_CLASS}-item`}>
             <span className={`${BASE_CLASS}-item-name`}>{name}</span>
             <span
-                className={`${BASE_CLASS}-item-state ${BASE_CLASS}-item-state--${
-                    isActivated ? 'connected' : 'disconnected'
-                }`}>
+                className={classNames(
+                    `${BASE_CLASS}-item-state`,
+                    `${BASE_CLASS}-item-state--${
+                        isActivated ? 'connected' : 'disconnected'
+                    }`,
+                    isLoading && `${BASE_CLASS}-item-state--loading`
+                )}>
                 {state}
             </span>
             <button

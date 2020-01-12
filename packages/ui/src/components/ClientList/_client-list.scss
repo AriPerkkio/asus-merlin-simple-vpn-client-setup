@@ -8,6 +8,29 @@
         margin: 1.5rem 2rem;
     }
 
+    &--loading {
+        font-family: $font-primary;
+        font-size: 1.5rem;
+        color: $color-indicator;
+        text-transform: uppercase;
+        margin: 2rem;
+        text-align: center;
+    }
+
+    &--error {
+        max-width: 20rem;
+        font-family: $font-primary;
+        font-size: 1.5rem;
+        color: $color-negative;
+        text-transform: uppercase;
+        margin: 2rem;
+
+        & > * {
+            text-transform: none;
+            font-size: 1rem;
+        }
+    }
+
     &-item {
         display: flex;
         flex-wrap: wrap;
@@ -38,6 +61,10 @@
 
             &--disconnected {
                 color: $color-negative;
+            }
+
+            &--loading {
+                color: $color-indicator;
             }
         }
 
