@@ -7,6 +7,7 @@ export const enum ConnectionState {
     CONNECTED = 'CONNECTED',
     CONNECTING = 'CONNECTING',
     DISCONNECTED = 'DISCONNECTED',
+    DISCONNECTING = 'DISCONNECTING',
     UNKNOWN = 'UNKNOWN',
 }
 
@@ -30,6 +31,7 @@ interface VPNClient {
     name: string;
     state: ConnectionState;
     clients: Client[];
+    error?: ErrorType;
 }
 
 interface Configuration {

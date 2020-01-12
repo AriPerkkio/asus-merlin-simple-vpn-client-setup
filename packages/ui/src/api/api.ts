@@ -18,7 +18,7 @@ class Api {
      */
     async activateVPNClient(id: number): Promise<string> {
         return fetch(`/api/vpn-clients/${id}/activate`).then(response =>
-            response.text()
+            response.json()
         );
     }
 
@@ -28,7 +28,7 @@ class Api {
      */
     async deactivateVPNClient(id: number): Promise<string> {
         return fetch(`/api/vpn-clients/${id}/deactivate`).then(response =>
-            response.text()
+            response.json()
         );
     }
 }

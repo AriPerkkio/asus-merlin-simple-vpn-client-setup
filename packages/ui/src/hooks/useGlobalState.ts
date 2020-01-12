@@ -1,70 +1,72 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useMemo } from 'react';
 
-interface SubsriberOptions<StateType extends object> {
-    shouldUpdate?: (previousState: StateType, newState: StateType) => boolean;
-    reducer?: (previousState: StateType, action: any) => StateType;
-    initialState?: StateType;
-}
+import {
+    SubsriberOptions,
+    Subscriber,
+    StateUpdater,
+    UseGlobalStateOutput,
+    ReducerType,
+    StateUpdate,
+} from './types';
+import { useUpdatedRef } from './useUpdatedRef';
+import { BaseActionType } from 'reducers/types';
 
-interface Subscriber<StateType extends object = {}>
-    extends SubsriberOptions<StateType> {
-    render: React.Dispatch<void>;
-}
-
-type StateUpdater<StateType> = (value: StateType) => void;
-type UseGlobalStateOutput<State> = [
-    State,
-    StateUpdater<{ [PartOfState in keyof State]?: State[PartOfState] }>
-];
-
-const defaultCompare = <StateType>(): boolean => true;
+const defaultCompare = (): boolean => true;
 const updateSubscriber = <StateType extends object>(
     previousState: StateType,
     newState: StateType
 ): ((subscriber: Subscriber) => void) => (subsriber): void => {
     const { render, shouldUpdate }: Subscriber = subsriber || {};
+    const _shouldUpdate =
+        (shouldUpdate && shouldUpdate.current) || defaultCompare;
 
-    if ((shouldUpdate || defaultCompare)(previousState, newState)) {
+    if (_shouldUpdate(previousState, newState)) {
         render();
     }
 };
 
-const createGlobalState = () => {
-    let state = {};
-    let stateInitialized = false;
-    const subscribers: Subscriber<any>[] = [];
+let state = {};
+let stateInitialized = false;
+const subscribers: Subscriber<any>[] = [];
 
-    const setState: StateUpdater<object> = (value: object) => {
-        const previousState = { ...state };
-        state = { ...state, ...value };
+const createSetState = <StateType>(
+    reducer: ReducerType<StateType> | undefined
+): StateUpdater<StateType> => (value: StateUpdate<StateType>): void => {
+    const previousState = { ...state } as StateType;
+    state = reducer
+        ? reducer(previousState, value as BaseActionType)
+        : { ...state, ...value };
 
-        subscribers.forEach(updateSubscriber(previousState, state));
-    };
+    console.log('Value', value, 'Next state', state);
 
-    const useGlobalState = <StateType extends object>(
-        options?: SubsriberOptions<StateType>
-    ): UseGlobalStateOutput<StateType> => {
-        const [, render] = useReducer(s => !s, true);
-        const { initialState, shouldUpdate } = options || {};
-
-        if (!stateInitialized && initialState) {
-            stateInitialized = true;
-            setState(initialState);
-        }
-
-        useEffect(() => {
-            const subscriber = { render, shouldUpdate };
-            subscribers.push(subscriber);
-
-            return (): void => {
-                subscribers.splice(subscribers.indexOf(subscriber), 1);
-            };
-        }, []); // eslint-disable-line
-
-        return [state as StateType, setState];
-    };
-
-    return useGlobalState;
+    subscribers.forEach(updateSubscriber(previousState, state));
 };
 
-export const useGlobalState = createGlobalState();
+export const useGlobalState = <StateType extends object>(
+    options?: SubsriberOptions<StateType>
+): UseGlobalStateOutput<StateType> => {
+    const [, render] = useReducer(s => !s, true);
+    const { initialState, shouldUpdate, reducer } = options || {};
+    const latestShouldUpdate = useUpdatedRef(shouldUpdate);
+
+    const setState = useMemo(() => createSetState(reducer), [reducer]);
+
+    if (!stateInitialized && initialState) {
+        stateInitialized = true;
+        createSetState(undefined)(initialState);
+    }
+
+    useEffect(() => {
+        const subscriber: Subscriber<StateType> = {
+            render,
+            shouldUpdate: latestShouldUpdate,
+        };
+        subscribers.push(subscriber);
+
+        return (): void => {
+            subscribers.splice(subscribers.indexOf(subscriber), 1);
+        };
+    }, [latestShouldUpdate]);
+
+    return [state as StateType, setState];
+};

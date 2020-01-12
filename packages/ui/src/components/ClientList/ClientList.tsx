@@ -1,16 +1,22 @@
 import React from 'react';
 
-import Api from 'api';
 import { useClients } from 'hooks/useClients';
 import {
     VPNClient,
     Client,
+    ConnectionState,
 } from 'asus-merlin-simple-vpn-client-setup-api/src/types';
 
 const BASE_CLASS = 'client-list';
 
 const ClientList: React.FC = () => {
-    const { clients, isLoading, error } = useClients();
+    const {
+        clients,
+        isLoading,
+        error,
+        activateClient,
+        deactivateClient,
+    } = useClients();
 
     return (
         <section className={BASE_CLASS}>
@@ -19,25 +25,40 @@ const ClientList: React.FC = () => {
             </header>
 
             {isLoading && 'Loading...'}
-            {error && 'Error'}
+            {error && `Error: ${error}`}
 
-            <ul>{clients.map(ClientListItem)}</ul>
+            <ul>
+                {clients.map(client => (
+                    <ClientListItem
+                        key={client.id}
+                        {...client}
+                        onActivate={activateClient}
+                        onDeactivate={deactivateClient}
+                    />
+                ))}
+            </ul>
         </section>
     );
 };
 
-const ClientListItem: React.FC<VPNClient> = ({
+interface ClientListItemProps extends VPNClient {
+    onActivate: (id: number) => void;
+    onDeactivate: (id: number) => void;
+}
+
+const ClientListItem: React.FC<ClientListItemProps> = ({
     id,
     name,
     state,
     clients,
-}: VPNClient) => {
-    const isActivated = state === 'CONNECTED'; // ConnectionState.CONNECTED: Cannot access ambient const enums -error
+    onActivate,
+    onDeactivate,
+}: ClientListItemProps) => {
+    const isActivated = state === ('CONNECTED' as ConnectionState);
 
     const buttonText = isActivated ? 'Deactivate' : 'Activate';
-    const onClick = isActivated
-        ? Api.deactivateVPNClient
-        : Api.activateVPNClient;
+    const onClick = isActivated ? onDeactivate : onActivate;
+    const isLoading = state === 'CONNECTING' || state === 'DISCONNECTING';
 
     return (
         <li key={id} className={`${BASE_CLASS}-item`}>
@@ -49,9 +70,12 @@ const ClientListItem: React.FC<VPNClient> = ({
                 {state}
             </span>
             <button
-                onClick={() => onClick(id)}
+                disabled={isLoading}
+                onClick={(): void => {
+                    onClick(id);
+                }}
                 className={`${BASE_CLASS}-item-toggle`}>
-                {buttonText}
+                {isLoading ? '...' : buttonText}
             </button>
 
             <div className={`${BASE_CLASS}-item-devices`}>

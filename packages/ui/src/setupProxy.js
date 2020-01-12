@@ -9,13 +9,20 @@ module.exports = app => {
         app.use('/api/vpn-clients/:id/activate', (req, res) => {
             const { id } = req.params;
             console.log(`Activate ${id}`);
-            setTimeout(() => res.json(mockData), 2000);
+            const client = mockData.find(_client => _client.id == id);
+
+            setTimeout(() => res.json({ ...client, state: 'CONNECTED' }), 3000);
         });
 
         app.use('/api/vpn-clients/:id/deactivate', (req, res) => {
             const { id } = req.params;
             console.log(`Deactivate ${id}`);
-            setTimeout(() => res.json(mockData), 2000);
+            const client = mockData.find(_client => _client.id == id);
+
+            setTimeout(
+                () => res.json({ ...client, state: 'DISCONNECTED' }),
+                3000
+            );
         });
 
         app.use('/api/vpn-clients', (req, res) =>
