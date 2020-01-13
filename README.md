@@ -2,12 +2,14 @@
 
 Simpler UI for setting on/off VPN clients on Asus Merlin. Designed to be used in local network only.
 
+![demo](https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup/blob/master/resources/demo.png)
+
 ## Installation
 
 ```bash
-# Specify version in file
+# Specify version in URL
 $ curl -L \
-    https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup/files/4023802/asus-merlin-simple-vpn-client-setup-0.0.1.zip \
+    https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup/files/4050830/asus-merlin-simple-vpn-client-setup-0.0.2.zip \
     --output asus-merlin-simple-vpn-client-setup.zip
 
 $ unzip -q asus-merlin-simple-vpn-client-setup.zip
@@ -25,13 +27,13 @@ PORT=
 
 # Run in background and generate logs
 $ sh -c "yarn start >> logs" &
-
 ```
 
 ## Building & packing release
 
 ```sh
-$ <project root>
+$ cd <project root>
+
 # Install dependencies
 $ yarn
 

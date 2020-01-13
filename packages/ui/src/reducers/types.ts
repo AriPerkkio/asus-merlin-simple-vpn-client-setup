@@ -72,7 +72,10 @@ export type ClientsActionTypes =
     | ClientsLoadErrorAction
     | ClientActivationStartAction
     | ClientActivationSuccessAction
-    | ClientActivationErrorAction;
+    | ClientActivationErrorAction
+    | ClientDeactivationStartAction
+    | ClientDeactivationSuccessAction
+    | ClientDeactivationErrorAction;
 
 export interface ClientsState {
     isLoading: boolean;
