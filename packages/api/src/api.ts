@@ -1,7 +1,7 @@
 import SSHClient from './ssh-client';
 import IPLeakClient from './ipleak-client';
 import { parseState, parseClients } from './nvram-parser';
-import { VPNClient, ConnectionState, ErrorType, IPAddressInfo } from './types';
+import { VPNClient, ErrorType, IPAddressInfo } from './types';
 
 const MAX_ACTIVE_CLIENTS = 3;
 const POLL_INTERVAL_MS = 2000;
@@ -63,13 +63,13 @@ class Api {
         const countOfActiveClients = await this.getCountOfActiveClients();
 
         if (countOfActiveClients >= MAX_ACTIVE_CLIENTS) {
-            return ErrorType.ERROR_MAX_CONCURRENT_CLIENTS;
+            return 'ERROR_MAX_CONCURRENT_CLIENTS';
         }
 
         const { state } = await this.getVpnClientInfo(id);
 
-        if (state !== ConnectionState.DISCONNECTED) {
-            return ErrorType.ERROR_CLIENT_NOT_DISCONNECTED;
+        if (state !== 'DISCONNECTED') {
+            return 'ERROR_CLIENT_NOT_DISCONNECTED';
         }
 
         await this.sshClient.execute(`service start_vpnclient${id}`);
@@ -78,12 +78,12 @@ class Api {
             await waitPollInterval();
             const info = await this.getVpnClientInfo(id);
 
-            if (info.state === ConnectionState.CONNECTED) {
+            if (info.state === 'CONNECTED') {
                 return info;
             }
         }
 
-        return ErrorType.ERROR_CLIENT_DEACTIVATION_TIMEOUT;
+        return 'ERROR_CLIENT_DEACTIVATION_TIMEOUT';
     }
 
     /**
@@ -93,8 +93,8 @@ class Api {
     public async deactivateClient(id: number): Promise<ErrorType | VPNClient> {
         const { state } = await this.getVpnClientInfo(id);
 
-        if (state !== ConnectionState.CONNECTED) {
-            return ErrorType.ERROR_CLIENT_NOT_CONNECTED;
+        if (state !== 'CONNECTED') {
+            return 'ERROR_CLIENT_NOT_CONNECTED';
         }
 
         await this.sshClient.execute(`service stop_vpnclient${id}`);
@@ -103,12 +103,12 @@ class Api {
             await waitPollInterval();
             const info = await this.getVpnClientInfo(id);
 
-            if (info.state === ConnectionState.DISCONNECTED) {
+            if (info.state === 'DISCONNECTED') {
                 return info;
             }
         }
 
-        return ErrorType.ERROR_CLIENT_DEACTIVATION_TIMEOUT;
+        return 'ERROR_CLIENT_DEACTIVATION_TIMEOUT';
     }
 
     private async getVpnClientInfo(id: number): Promise<VPNClient> {
@@ -129,9 +129,7 @@ class Api {
     private async getCountOfActiveClients(): Promise<number> {
         const clients = await this.getVpnClients();
 
-        return clients.filter(
-            client => client.state === ConnectionState.CONNECTED
-        ).length;
+        return clients.filter(client => client.state === 'CONNECTED').length;
     }
 }
 

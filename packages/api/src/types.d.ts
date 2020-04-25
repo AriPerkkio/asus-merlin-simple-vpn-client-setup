@@ -1,32 +1,27 @@
-export enum Type {
-    WAN,
-    VPN,
-}
+export type VPNType = 'WAN' | 'VPN';
 
-export const enum ConnectionState {
-    CONNECTED = 'CONNECTED',
-    CONNECTING = 'CONNECTING',
-    DISCONNECTED = 'DISCONNECTED',
-    DISCONNECTING = 'DISCONNECTING',
-    UNKNOWN = 'UNKNOWN',
-}
+export type ConnectionState =
+    | 'CONNECTED'
+    | 'CONNECTING'
+    | 'DISCONNECTED'
+    | 'DISCONNECTING'
+    | 'UNKNOWN';
 
-export const enum ErrorType {
-    ERROR_MAX_CONCURRENT_CLIENTS = 'ERROR_MAX_CONCURRENT_CLIENTS',
-    ERROR_CLIENT_NOT_DISCONNECTED = 'ERROR_CLIENT_NOT_DISCONNECTED',
-    ERROR_CLIENT_NOT_CONNECTED = 'ERROR_CLIENT_NOT_CONNECTED',
-    ERROR_CLIENT_ACTIVATION_TIMEOUT = 'ERROR_CLIENT_ACTIVATION_TIMEOUT',
-    ERROR_CLIENT_DEACTIVATION_TIMEOUT = 'ERROR_CLIENT_DEACTIVATION_TIMEOUT',
-}
+export type ErrorType =
+    | 'ERROR_MAX_CONCURRENT_CLIENTS'
+    | 'ERROR_CLIENT_NOT_DISCONNECTED'
+    | 'ERROR_CLIENT_NOT_CONNECTED'
+    | 'ERROR_CLIENT_ACTIVATION_TIMEOUT'
+    | 'ERROR_CLIENT_DEACTIVATION_TIMEOUT';
 
 interface Client {
     name: string;
     ip: string;
     target: string;
-    type: Type | string;
+    type: VPNType | string;
 }
 
-interface VPNClient {
+export interface VPNClient {
     id: number;
     name: string;
     state: ConnectionState;
