@@ -25,6 +25,24 @@ app.get('/api/vpn-clients', (req, res) => {
 });
 
 /**
+ * Get IP Address info of the router
+ */
+app.get('/api/router-ip-address', (req, res) => {
+    Api.getRouterIP()
+        .then(routerIpAddressInfo => res.json(routerIpAddressInfo))
+        .catch(error => res.status(500).json(error));
+});
+
+/**
+ * Get IP Address info of the server
+ */
+app.get('/api/server-ip-address', (req, res) => {
+    Api.getServerIP()
+        .then(serverIpAddressInfo => res.json(serverIpAddressInfo))
+        .catch(error => res.status(500).json(error));
+});
+
+/**
  * Activate given VPN client
  */
 app.get('/api/vpn-clients/:id/activate', (req, res) => {

@@ -12,7 +12,7 @@ import { useUpdatedRef } from './useUpdatedRef';
 import { BaseActionType } from 'reducers/types';
 
 const defaultCompare = (): boolean => true;
-const updateSubscriber = <StateType extends object>(
+const updateSubscriber = <StateType>(
     previousState: StateType,
     newState: StateType
 ): ((subscriber: Subscriber) => void) => (subsriber): void => {
@@ -25,19 +25,24 @@ const updateSubscriber = <StateType extends object>(
     }
 };
 
-let state = {};
-let stateInitialized = false;
-const subscribers: Subscriber<any>[] = [];
+const state: { [key: string]: any } = {};
+const stateInitialized: { [key: string]: boolean } = {};
+const subscribers: { [key: string]: Subscriber<any>[] } = {};
 
 const createSetState = <StateType>(
-    reducer: ReducerType<StateType> | undefined
+    reducer: ReducerType<StateType> | undefined,
+    stateRootId: string
 ): StateUpdater<StateType> => (value: StateUpdate<StateType>): void => {
-    const previousState = { ...state } as StateType;
-    state = reducer
-        ? reducer(previousState, value as BaseActionType)
-        : { ...state, ...value };
+    const stateRoot = state[stateRootId] || {};
+    const previousState = { ...stateRoot } as StateType;
 
-    subscribers.forEach(updateSubscriber(previousState, state));
+    const newState = reducer
+        ? reducer(previousState, value as BaseActionType)
+        : { ...previousState, ...value };
+
+    state[stateRootId] = newState;
+
+    subscribers[stateRootId].forEach(updateSubscriber(previousState, newState));
 };
 
 export const useGlobalState = <StateType extends object>(
@@ -45,13 +50,22 @@ export const useGlobalState = <StateType extends object>(
 ): UseGlobalStateOutput<StateType> => {
     const [, render] = useReducer(s => !s, true);
     const { initialState, shouldUpdate, reducer } = options || {};
+    const stateRootId = (options || {}).stateRootId || 'root';
+
     const latestShouldUpdate = useUpdatedRef(shouldUpdate);
 
-    const setState = useMemo(() => createSetState(reducer), [reducer]);
+    const setState = useMemo(() => createSetState(reducer, stateRootId), [
+        reducer,
+        stateRootId,
+    ]);
 
-    if (!stateInitialized && initialState) {
-        stateInitialized = true;
-        createSetState(undefined)(initialState);
+    if (!subscribers[stateRootId]) {
+        subscribers[stateRootId] = [];
+    }
+
+    if (!stateInitialized[stateRootId] && initialState) {
+        stateInitialized[stateRootId] = true;
+        createSetState(undefined, stateRootId)(initialState);
     }
 
     useEffect(() => {
@@ -59,12 +73,15 @@ export const useGlobalState = <StateType extends object>(
             render,
             shouldUpdate: latestShouldUpdate,
         };
-        subscribers.push(subscriber);
+        subscribers[stateRootId].push(subscriber);
 
         return (): void => {
-            subscribers.splice(subscribers.indexOf(subscriber), 1);
+            subscribers[stateRootId].splice(
+                subscribers[stateRootId].indexOf(subscriber),
+                1
+            );
         };
-    }, [latestShouldUpdate]);
+    }, [latestShouldUpdate, stateRootId]);
 
-    return [state as StateType, setState];
+    return [state[stateRootId] as StateType, setState];
 };

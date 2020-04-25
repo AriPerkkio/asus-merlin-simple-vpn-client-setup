@@ -1,6 +1,7 @@
 import SSHClient from './ssh-client';
+import IPLeakClient from './ipleak-client';
 import { parseState, parseClients } from './nvram-parser';
-import { VPNClient, ConnectionState, ErrorType } from './types';
+import { VPNClient, ConnectionState, ErrorType, IPAddressInfo } from './types';
 
 const MAX_ACTIVE_CLIENTS = 3;
 const POLL_INTERVAL_MS = 2000;
@@ -10,10 +11,12 @@ const waitPollInterval = (): Promise<void> =>
     new Promise(resolve => setTimeout(resolve, POLL_INTERVAL_MS));
 
 class Api {
-    private ssh: SSHClient;
+    private sshClient: SSHClient;
+    private ipLeakClient: IPLeakClient;
 
     constructor() {
-        this.ssh = new SSHClient();
+        this.sshClient = new SSHClient();
+        this.ipLeakClient = new IPLeakClient();
     }
 
     /**
@@ -27,6 +30,29 @@ class Api {
         }
 
         return clients;
+    }
+
+    /**
+     * Get IP address of the router
+     */
+    public async getRouterIP(): Promise<IPAddressInfo> {
+        const [ip, dns1, dns2] = await this.sshClient.execute(
+            'nvram get wan0_ipaddr',
+            'nvram get wan0_dns1_x',
+            'nvram get wan0_dns2_x'
+        );
+
+        return {
+            ip,
+            dns: [dns1, dns2].filter(Boolean),
+        };
+    }
+
+    /**
+     * Get IP address of the server
+     */
+    public async getServerIP(): Promise<IPAddressInfo> {
+        return this.ipLeakClient.getIPAddressInfo();
     }
 
     /**
@@ -46,7 +72,7 @@ class Api {
             return ErrorType.ERROR_CLIENT_NOT_DISCONNECTED;
         }
 
-        await this.ssh.execute(`service start_vpnclient${id}`);
+        await this.sshClient.execute(`service start_vpnclient${id}`);
 
         for (let i = 0; i < POLL_COUNT; i++) {
             await waitPollInterval();
@@ -71,7 +97,7 @@ class Api {
             return ErrorType.ERROR_CLIENT_NOT_CONNECTED;
         }
 
-        await this.ssh.execute(`service stop_vpnclient${id}`);
+        await this.sshClient.execute(`service stop_vpnclient${id}`);
 
         for (let i = 0; i < POLL_COUNT; i++) {
             await waitPollInterval();
@@ -86,7 +112,7 @@ class Api {
     }
 
     private async getVpnClientInfo(id: number): Promise<VPNClient> {
-        const [name, state, clients] = await this.ssh.execute(
+        const [name, state, clients] = await this.sshClient.execute(
             `nvram get vpn_client${id}_desc`,
             `nvram get vpn_client${id}_state`,
             `nvram get vpn_client${id}_clientlist`

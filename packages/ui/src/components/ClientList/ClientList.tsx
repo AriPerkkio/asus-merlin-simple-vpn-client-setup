@@ -103,17 +103,17 @@ const ClientListItem: React.FC<ClientListItemProps> = ({
 const DeviceSetup: React.FC<Client> = ({ name, ip, target, type }: Client) => (
     <li key={ip}>
         <dl className={`${BASE_CLASS}-item-devices-list`}>
-            <dd>Name</dd>
-            <dt>{name}</dt>
+            <dt>Name</dt>
+            <dd>{name}</dd>
 
-            <dd>IP</dd>
-            <dt>{ip}</dt>
+            <dt>IP</dt>
+            <dd>{ip}</dd>
 
-            <dd>Target</dd>
-            <dt>{target}</dt>
+            <dt>Target</dt>
+            <dd>{target}</dd>
 
-            <dd>Type</dd>
-            <dt>{type}</dt>
+            <dt>Type</dt>
+            <dd>{type}</dd>
         </dl>
     </li>
 );

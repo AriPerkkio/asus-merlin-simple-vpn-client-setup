@@ -1,0 +1,54 @@
+.ip-and-dns-info {
+    &-header {
+        color: $color-secondary;
+        text-transform: uppercase;
+        font-size: 1.5rem;
+        font-family: $font-secondary;
+        font-weight: 500;
+        margin: 1.5rem 2rem;
+    }
+
+    &--loading,
+    &--error {
+        font-family: $font-primary;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+    }
+
+    &--loading {
+        color: $color-indicator;
+    }
+
+    &--error {
+        color: $color-negative;
+    }
+
+    &-name {
+        font-family: $font-primary;
+        color: $color-secondary;
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+    }
+
+    &-list {
+        margin-left: 2.5rem;
+        margin-right: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 20rem;
+        font-family: $font-primary;
+        color: $color-secondary;
+
+        dt,
+        dd {
+            flex-basis: 50%;
+            margin-top: 0.5rem;
+        }
+
+        dd {
+            text-align: right;
+        }
+    }
+}

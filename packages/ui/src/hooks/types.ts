@@ -7,6 +7,7 @@ export type ReducerType<StateType> = (
 ) => StateType;
 
 export interface SubsriberOptions<StateType extends object> {
+    stateRootId?: string;
     shouldUpdate?: ShouldUpdateType<StateType>;
     initialState?: StateType;
     reducer?: ReducerType<StateType>;

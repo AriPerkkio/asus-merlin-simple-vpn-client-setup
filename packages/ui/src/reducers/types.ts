@@ -1,6 +1,7 @@
 import {
     VPNClient,
     ErrorType,
+    IPAddressInfo,
 } from 'asus-merlin-simple-vpn-client-setup-api/src/types';
 
 export const ON_CLIENTS_LOAD_START = { type: 'ON_CLIENTS_LOAD_START' };
@@ -14,6 +15,10 @@ export const ON_CLIENT_ACTIVATION_FAILURE = { type: 'ON_CLIENT_ACTIVATION_FAILUR
 export const ON_CLIENT_DEACTIVATION_START = { type: 'ON_CLIENT_DEACTIVATION_START' }; // prettier-ignore
 export const ON_CLIENT_DEACTIVATION_SUCCESS = { type: 'ON_CLIENT_DEACTIVATION_SUCCESS' }; // prettier-ignore
 export const ON_CLIENT_DEACTIVATION_FAILURE = { type: 'ON_CLIENT_DEACTIVATION_FAILURE' }; // prettier-ignore
+
+export const ON_IP_INFO_LOAD_START = { type: 'ON_IP_INFO_LOAD_START' };
+export const ON_IP_INFO_LOAD_SUCCESS = { type: 'ON_IP_INFO_LOAD_SUCCESS' };
+export const ON_IP_INFO_LOAD_FAILURE = { type: 'ON_IP_INFO_LOAD_FAILURE' };
 
 export type BaseActionType = {
     type: string;
@@ -66,6 +71,20 @@ export interface ClientDeactivationErrorAction extends BaseActionType {
     id: number;
 }
 
+export interface IpInfoLoadStartAction extends BaseActionType {
+    type: typeof ON_IP_INFO_LOAD_FAILURE.type;
+}
+
+export interface IpInfoLoadSuccessAction extends BaseActionType {
+    type: typeof ON_IP_INFO_LOAD_SUCCESS.type;
+    ipInfo: IPAddressInfo;
+}
+
+export interface IpInfoLoadErrorAction extends BaseActionType {
+    type: typeof ON_IP_INFO_LOAD_FAILURE.type;
+    error: ErrorType;
+}
+
 export type ClientsActionTypes =
     | ClientsLoadStartAction
     | ClientsLoadSuccessAction
@@ -77,8 +96,19 @@ export type ClientsActionTypes =
     | ClientDeactivationSuccessAction
     | ClientDeactivationErrorAction;
 
+export type IpInfoActionTypes =
+    | IpInfoLoadStartAction
+    | IpInfoLoadSuccessAction
+    | IpInfoLoadErrorAction;
+
 export interface ClientsState {
     isLoading: boolean;
     error: ErrorType | null;
     clients: VPNClient[];
+}
+
+export interface IpInfoState {
+    isLoading: boolean;
+    error: ErrorType | null;
+    ipInfo: IPAddressInfo | null;
 }

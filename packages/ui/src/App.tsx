@@ -1,5 +1,6 @@
 import React from 'react';
 
+import IpAndDnsInfo from 'components/IpAndDnsInfo';
 import ClientList from 'components/ClientList';
 
 const App: React.FC = () => (
@@ -9,6 +10,7 @@ const App: React.FC = () => (
         </header>
 
         <main className='app-content'>
+            <IpAndDnsInfo />
             <ClientList />
         </main>
     </>

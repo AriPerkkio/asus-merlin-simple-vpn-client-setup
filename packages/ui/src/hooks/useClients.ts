@@ -19,6 +19,7 @@ import { UseClientsOutput } from './types';
 
 export const useClients = (): UseClientsOutput => {
     const [state, dispatch] = useGlobalState<ClientsState>({
+        stateRootId: 'vpnClients',
         reducer,
         initialState,
     });
