@@ -2,6 +2,8 @@
 
 Simpler UI for setting on/off VPN clients on Asus Merlin. Designed to be used in local network only.
 
+## [Check out online demo](https://ariperkkio.github.io/asus-merlin-simple-vpn-client-setup)
+
 ![demo](https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup/blob/master/resources/demo.png)
 
 ## Installation
