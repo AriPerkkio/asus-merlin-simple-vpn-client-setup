@@ -84,10 +84,11 @@ export default function reducer(
             return { ...state, clients };
         }
 
+        // https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup/issues/1
         case ON_CLIENT_DEACTIVATION_SUCCESS.type: {
             const { client } = action;
-            const clients = state.clients.map(_client =>
-                _client.id === client.id ? client : _client
+            const clients = state.clients.map(_client2 =>
+                _client2.id === client.id ? client : _client2
             );
 
             return { ...state, clients };
