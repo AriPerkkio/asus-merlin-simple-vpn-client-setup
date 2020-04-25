@@ -3,55 +3,64 @@ import {
     VPNClient,
     IPAddressInfo,
 } from 'asus-merlin-simple-vpn-client-setup-api/src/types';
+import mockData from 'mock-data';
 
-const JSON_HEADERS = { headers: { Accept: 'application/json' } };
+const delay = (): Promise<void> => new Promise(r => setTimeout(r, 2000));
 
 class Api {
     /**
      * Get list of VPN clients
      */
     async getVPNClients(): Promise<VPNClient[]> {
-        return fetch('/api/vpn-clients', JSON_HEADERS).then(response =>
-            response.json()
-        );
+        await delay();
+
+        return mockData.vpnClients as VPNClient[];
     }
 
     /**
      * Activate given VPN client
      * @param id VPN client ID
      */
-    async activateVPNClient(id: number): Promise<string> {
-        return fetch(`/api/vpn-clients/${id}/activate`).then(response =>
-            response.json()
-        );
+    async activateVPNClient(id: number): Promise<VPNClient> {
+        await delay();
+
+        const client = mockData.vpnClients.find(
+            _client => _client.id === id
+        ) as VPNClient;
+
+        return { ...client, state: 'CONNECTED' };
     }
 
     /**
      * Deactivate given VPN client
      * @param id VPN client ID
      */
-    async deactivateVPNClient(id: number): Promise<string> {
-        return fetch(`/api/vpn-clients/${id}/deactivate`).then(response =>
-            response.json()
-        );
+    async deactivateVPNClient(id: number): Promise<VPNClient> {
+        await delay();
+
+        const client = mockData.vpnClients.find(
+            _client => _client.id === id
+        ) as VPNClient;
+
+        return { ...client, state: 'DISCONNECTED' };
     }
 
     /**
      * Get IP address of the router
      */
     async getRouterIP(): Promise<IPAddressInfo> {
-        return fetch('/api/router-ip-address').then(response =>
-            response.json()
-        );
+        await delay();
+
+        return mockData.routerIpAddress;
     }
 
     /**
      * Get IP address of the server
      */
     async getServerIP(): Promise<IPAddressInfo> {
-        return fetch('/api/server-ip-address').then(response =>
-            response.json()
-        );
+        await delay();
+
+        return mockData.serverIpAddress;
     }
 
     /**
