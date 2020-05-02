@@ -10,7 +10,7 @@
 
     &-content {
         margin: 1rem;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-color: $color-primary;
         max-width: 35rem;
     }
