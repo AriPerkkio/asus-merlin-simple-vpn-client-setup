@@ -1,10 +1,22 @@
-import fetch from 'node-fetch';
-import { v4 as uuid } from 'uuid';
-
 import { IPAddressInfo } from './types';
 
-// TODO implement with dependency injection for sharing functionality with UI
+// Generic fetcher type acceping node-fetch and lib.dom/fetch
+export type Fetcher = <T = {}>(
+    url: string
+) => Promise<{
+    json: () => Promise<T>;
+    text: () => Promise<string>;
+}>;
+
 export default class IPLeakClient {
+    private fetcher: Fetcher;
+    private idGenerator: () => string;
+
+    constructor(fetcher: Fetcher, idGenerator: () => string) {
+        this.fetcher = fetcher;
+        this.idGenerator = idGenerator;
+    }
+
     public async getIPAddressInfo(): Promise<IPAddressInfo> {
         const [ip, dns] = await Promise.all([
             this.getIPAddress(),
@@ -15,7 +27,7 @@ export default class IPLeakClient {
     }
 
     private async getIPAddress(): Promise<string> {
-        return fetch('https://ipv4.ipleak.net/json')
+        return this.fetcher<IPAddressInfo>('https://ipv4.ipleak.net/json')
             .then(response => response.json())
             .then(json => json.ip);
     }
@@ -25,7 +37,7 @@ export default class IPLeakClient {
 
         // https://gist.github.com/AriPerkkio/25a37745b30aeceef311bc7f2446b28d
         for (let i = 0; i < 5; i++) {
-            const hash = uuid().replace(/-/g, '');
+            const hash = this.idGenerator().replace(/-/g, '');
             const time = new Date().getTime();
 
             await Promise.all(
@@ -33,7 +45,7 @@ export default class IPLeakClient {
                     const prefix = index.toString().repeat(8);
                     const url = `https://${prefix}${hash}.ipleak.net/dnsdetect/?_=${time}`;
 
-                    return fetch(url)
+                    return this.fetcher(url)
                         .then(response => response.text())
                         .then(dns => (dnsResults[dns] = true));
                 })

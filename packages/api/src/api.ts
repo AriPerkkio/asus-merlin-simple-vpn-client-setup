@@ -1,3 +1,6 @@
+import fetch from 'node-fetch';
+import { v4 as uuid } from 'uuid';
+
 import SSHClient from './ssh-client';
 import IPLeakClient from './ipleak-client';
 import { parseState, parseClients } from './nvram-parser';
@@ -16,7 +19,7 @@ class Api {
 
     constructor() {
         this.sshClient = new SSHClient();
-        this.ipLeakClient = new IPLeakClient();
+        this.ipLeakClient = new IPLeakClient(fetch, uuid);
     }
 
     /**

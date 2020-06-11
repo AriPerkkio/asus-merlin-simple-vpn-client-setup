@@ -20,10 +20,8 @@ export const useClientIpInfo = (): IpInfoState => {
     useEffect(() => {
         dispatch(ON_IP_INFO_LOAD_START);
 
-        Promise.all([Api.getClientIP(), Api.getClientDNS()])
-            .then(([ip, dns]) =>
-                dispatch({ ...ON_IP_INFO_LOAD_SUCCESS, ipInfo: { ip, dns } })
-            )
+        Api.getClientIPInfo()
+            .then(ipInfo => dispatch({ ...ON_IP_INFO_LOAD_SUCCESS, ipInfo }))
             .catch(error => dispatch({ ...ON_IP_INFO_LOAD_FAILURE, error }));
     }, [dispatch]);
 

@@ -3,10 +3,17 @@ import {
     VPNClient,
     IPAddressInfo,
 } from 'asus-merlin-simple-vpn-client-setup-api/src/types';
+import IPLeakClient from 'asus-merlin-simple-vpn-client-setup-api/src/ipleak-client';
 
 const JSON_HEADERS = { headers: { Accept: 'application/json' } };
 
 class Api {
+    private ipLeakClient: IPLeakClient;
+
+    constructor() {
+        this.ipLeakClient = new IPLeakClient(fetch, uuid);
+    }
+
     /**
      * Get list of VPN clients
      */
@@ -55,39 +62,10 @@ class Api {
     }
 
     /**
-     * Get IP address of the client
+     * Get IP address info of the client
      */
-    async getClientIP(): Promise<string> {
-        return fetch('https://ipv4.ipleak.net/json')
-            .then(response => response.json())
-            .then(json => json.ip);
-    }
-
-    /**
-     * Get DNS address of the client
-     * TODO re-use server's implementation
-     */
-    async getClientDNS(): Promise<string[]> {
-        const dnsResults: { [key: string]: boolean } = {};
-
-        // https://gist.github.com/AriPerkkio/25a37745b30aeceef311bc7f2446b28d
-        for (let i = 0; i < 5; i++) {
-            const hash = uuid().replace(/-/g, '');
-            const time = new Date().getTime();
-
-            await Promise.all(
-                [1, 2, 3, 4, 5].map(index => {
-                    const prefix = index.toString().repeat(8);
-                    const url = `https://${prefix}${hash}.ipleak.net/dnsdetect/?_=${time}`;
-
-                    return fetch(url)
-                        .then(response => response.text())
-                        .then(dns => (dnsResults[dns] = true));
-                })
-            );
-        }
-
-        return Object.keys(dnsResults);
+    async getClientIPInfo(): Promise<IPAddressInfo> {
+        return this.ipLeakClient.getIPAddressInfo();
     }
 }
 
