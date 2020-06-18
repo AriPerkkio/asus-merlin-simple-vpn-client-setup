@@ -11,7 +11,7 @@ class Api {
     private ipLeakClient: IPLeakClient;
 
     constructor() {
-        this.ipLeakClient = new IPLeakClient(fetch, uuid);
+        this.ipLeakClient = new IPLeakClient(fetch.bind(window), uuid);
     }
 
     /**
