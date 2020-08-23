@@ -1,7 +1,7 @@
-const proxy = require('http-proxy-middleware');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const mockData = require('./mock-data');
 
-const USE_MOCK_API = true;
+const USE_MOCK_API = !true;
 
 module.exports = app => {
     if (USE_MOCK_API) {
@@ -42,7 +42,7 @@ module.exports = app => {
     } else {
         app.use(
             '/api',
-            proxy({
+            createProxyMiddleware({
                 target: 'http://localhost:3001',
                 logLevel: 'debug',
             })

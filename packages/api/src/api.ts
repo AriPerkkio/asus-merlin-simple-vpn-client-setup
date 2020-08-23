@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 import { v4 as uuid } from 'uuid';
 
-import SSHClient from './ssh-client';
-import IPLeakClient from './ipleak-client';
-import { parseState, parseClients } from './nvram-parser';
-import { VPNClient, ErrorType, IPAddressInfo } from './types';
+import SSHClient from 'ssh-client';
+import IPLeakClient from 'ipleak-client';
+import { parseState, parseClients } from 'nvram-parser';
+import { VPNClient, ErrorType, IPAddressInfo } from 'types';
 
 const MAX_ACTIVE_CLIENTS = 3;
 const POLL_INTERVAL_MS = 2000;

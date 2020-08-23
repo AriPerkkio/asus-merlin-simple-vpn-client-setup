@@ -1,4 +1,5 @@
 const path = require('path');
+const tsconfig = require('./tsconfig.json');
 
 module.exports = (_, { mode }) => ({
     mode,
@@ -23,6 +24,6 @@ module.exports = (_, { mode }) => ({
     },
     resolve: {
         extensions: ['.ts', '.mjs', '.js'],
-        modules: ['node_modules', './'],
+        modules: ['node_modules', tsconfig.compilerOptions.baseUrl],
     },
 });

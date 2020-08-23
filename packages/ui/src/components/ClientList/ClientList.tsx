@@ -1,12 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import { VPNClient, Client, ConnectionState } from '@api/types';
 
 import { useClients } from 'hooks/useClients';
-import {
-    VPNClient,
-    Client,
-    ConnectionState,
-} from 'asus-merlin-simple-vpn-client-setup-api/src/types';
 
 const BASE_CLASS = 'client-list';
 
@@ -41,8 +37,8 @@ const ClientList: React.FC = () => {
             <ul>
                 {clients.map(client => (
                     <ClientListItem
-                        key={client.id}
                         {...client}
+                        key={client.id}
                         onActivate={activateClient}
                         onDeactivate={deactivateClient}
                     />
@@ -81,7 +77,8 @@ const ClientListItem: React.FC<ClientListItemProps> = ({
                         isActivated ? 'connected' : 'disconnected'
                     }`,
                     isLoading && `${BASE_CLASS}-item-state--loading`
-                )}>
+                )}
+            >
                 {state}
             </span>
             <button
@@ -89,7 +86,8 @@ const ClientListItem: React.FC<ClientListItemProps> = ({
                 onClick={(): void => {
                     onClick(id);
                 }}
-                className={`${BASE_CLASS}-item-toggle`}>
+                className={`${BASE_CLASS}-item-toggle`}
+            >
                 {isLoading ? '...' : buttonText}
             </button>
 

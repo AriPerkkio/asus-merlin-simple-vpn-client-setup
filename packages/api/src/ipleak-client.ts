@@ -1,7 +1,7 @@
-import { IPAddressInfo } from './types';
+import { IPAddressInfo } from 'types';
 
 // Generic fetcher type acceping node-fetch and lib.dom/fetch
-type Fetcher = <T = {}>(
+type Fetcher = <T = Record<string, unknown>>(
     url: string
 ) => Promise<{
     json: () => Promise<T>;

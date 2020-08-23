@@ -1,0 +1,29 @@
+{
+    "root": true,
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "plugins": ["node", "prettier"],
+    "extends": ["eslint:recommended", "prettier"],
+    "overrides": [
+        {
+            "files": [".ts"],
+            "parser": "@typescript-eslint/parser",
+            "plugins": ["@typescript-eslint", "prettier"],
+            "extends": [
+                "plugin:@typescript-eslint/eslint-recommended",
+                "plugin:@typescript-eslint/recommended",
+                "plugin:node/recommended-module"
+            ]
+        }
+    ],
+    "rules": {
+        "node/no-extraneous-import": ["error", { "allowModules": ["uuid"] }],
+        "node/no-missing-import": [
+            "error",
+            { "tryExtensions": [".js", ".ts", ".d.ts"] }
+        ],
+        "prettier/prettier": "error"
+    }
+}

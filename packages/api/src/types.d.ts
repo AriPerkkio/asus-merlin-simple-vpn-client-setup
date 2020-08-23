@@ -29,7 +29,6 @@ export interface VPNClient {
     error?: ErrorType;
 }
 
-// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IPAddressInfo {
     ip: string;
     dns: string[];

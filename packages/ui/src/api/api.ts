@@ -1,9 +1,6 @@
 import { v4 as uuid } from 'uuid';
-import {
-    VPNClient,
-    IPAddressInfo,
-} from 'asus-merlin-simple-vpn-client-setup-api/src/types';
-import IPLeakClient from 'asus-merlin-simple-vpn-client-setup-api/src/ipleak-client';
+import { VPNClient, IPAddressInfo } from '@api/types';
+import IPLeakClient from '@api/ipleak-client';
 
 const JSON_HEADERS = { headers: { Accept: 'application/json' } };
 
@@ -27,7 +24,7 @@ class Api {
      * Activate given VPN client
      * @param id VPN client ID
      */
-    async activateVPNClient(id: number): Promise<string> {
+    async activateVPNClient(id: number): Promise<VPNClient> {
         return fetch(`/api/vpn-clients/${id}/activate`).then(response =>
             response.json()
         );
@@ -37,7 +34,7 @@ class Api {
      * Deactivate given VPN client
      * @param id VPN client ID
      */
-    async deactivateVPNClient(id: number): Promise<string> {
+    async deactivateVPNClient(id: number): Promise<VPNClient> {
         return fetch(`/api/vpn-clients/${id}/deactivate`).then(response =>
             response.json()
         );

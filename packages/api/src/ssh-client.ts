@@ -1,7 +1,7 @@
 import { Client } from 'ssh2';
 import fs from 'fs';
 
-import { SSHConfiguration } from './types';
+import { SSHConfiguration } from 'types';
 
 const newlineRegex = /\n/g;
 
@@ -27,6 +27,7 @@ export default class SshClient {
         };
     }
 
+    // TODO handle failures. Invalid IP seems to crash server
     execute(...commands: string[]): Promise<string[]> {
         return new Promise((resolve, reject) => {
             const connection = new Client();

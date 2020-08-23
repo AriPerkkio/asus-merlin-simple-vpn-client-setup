@@ -1,6 +1,6 @@
 import {
     ClientsState,
-    ClientsActionTypes,
+    ClientsAction,
     ON_CLIENTS_LOAD_START,
     ON_CLIENTS_LOAD_SUCCESS,
     ON_CLIENTS_LOAD_FAILURE,
@@ -11,7 +11,7 @@ import {
     ON_CLIENT_DEACTIVATION_SUCCESS,
     ON_CLIENT_DEACTIVATION_FAILURE,
 } from './types';
-import { ConnectionState } from 'asus-merlin-simple-vpn-client-setup-api/src/types';
+import { ConnectionState } from '@api/types';
 
 export const initialState: ClientsState = {
     clients: [],
@@ -21,7 +21,7 @@ export const initialState: ClientsState = {
 
 export default function reducer(
     state: ClientsState,
-    action: ClientsActionTypes
+    action: ClientsAction
 ): ClientsState {
     switch (action.type) {
         case ON_CLIENTS_LOAD_START.type:

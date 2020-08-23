@@ -2,6 +2,7 @@
     "name": "asus-merlin-simple-vpn-client-setup",
     "version": "1.0.0",
     "description": "Simple VPN client setup for Asus Merlin",
+    "private": true,
     "workspaces": [
         "packages/api",
         "packages/ui"
@@ -15,18 +16,5 @@
     "main": "index.js",
     "repository": "https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup.git",
     "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "license": "MIT",
-    "private": true,
-    "devDependencies": {
-        "@typescript-eslint/eslint-plugin": "^2.15.0",
-        "@typescript-eslint/parser": "^2.15.0",
-        "eslint": "^6.8.0",
-        "eslint-config-prettier": "^6.9.0",
-        "eslint-config-react-app": "^5.1.0",
-        "eslint-plugin-prettier": "^3.1.2",
-        "eslint-plugin-react": "^7.17.0",
-        "nodemon": "^2.0.2",
-        "prettier": "^1.19.1",
-        "typescript": "^3.7.4"
-    }
+    "license": "MIT"
 }

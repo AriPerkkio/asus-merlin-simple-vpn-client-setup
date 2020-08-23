@@ -14,11 +14,12 @@ import {
     ON_CLIENT_DEACTIVATION_START,
     ON_CLIENT_DEACTIVATION_SUCCESS,
     ON_CLIENT_DEACTIVATION_FAILURE,
+    ClientsAction,
 } from 'reducers/types';
 import { UseClientsOutput } from './types';
 
 export const useClients = (): UseClientsOutput => {
-    const [state, dispatch] = useGlobalState<ClientsState>({
+    const [state, dispatch] = useGlobalState<ClientsState, ClientsAction>({
         stateRootId: 'vpnClients',
         reducer,
         initialState,

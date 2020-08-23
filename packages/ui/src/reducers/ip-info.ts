@@ -1,6 +1,6 @@
 import {
     IpInfoState,
-    IpInfoActionTypes,
+    IpInfoLoadAction,
     ON_IP_INFO_LOAD_START,
     ON_IP_INFO_LOAD_SUCCESS,
     ON_IP_INFO_LOAD_FAILURE,
@@ -14,7 +14,7 @@ export const initialState: IpInfoState = {
 
 export default function reducer(
     state: IpInfoState,
-    action: IpInfoActionTypes
+    action: IpInfoLoadAction
 ): IpInfoState {
     switch (action.type) {
         case ON_IP_INFO_LOAD_START.type:

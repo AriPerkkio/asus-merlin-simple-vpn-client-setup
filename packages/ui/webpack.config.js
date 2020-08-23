@@ -25,6 +25,9 @@ module.exports = (env, argv) => {
         resolve: {
             extensions: ['.ts', '.tsx', '.js', '.json', '.mjs'],
             modules: ['node_modules', './src'],
+            alias: {
+                '@api': path.resolve(__dirname, '../api/src'),
+            },
         },
         plugins: [
             new CleanWebpackPlugin(),

@@ -1,5 +1,6 @@
 import express from 'express';
-import Api from './api';
+
+import Api from 'api';
 
 const app = express();
 const port = 3001;

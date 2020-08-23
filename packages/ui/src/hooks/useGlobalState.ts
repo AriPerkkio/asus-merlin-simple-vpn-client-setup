@@ -11,12 +11,14 @@ import {
 import { useUpdatedRef } from './useUpdatedRef';
 import { BaseActionType } from 'reducers/types';
 
+// Support dynamic states
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const defaultCompare = (): boolean => true;
 const updateSubscriber = <StateType>(
     previousState: StateType,
     newState: StateType
-): ((subscriber: Subscriber) => void) => (subsriber): void => {
-    const { render, shouldUpdate }: Subscriber = subsriber || {};
+): ((subscriber: Subscriber<StateType>) => void) => (subsriber): void => {
+    const { render, shouldUpdate } = subsriber || {};
     const _shouldUpdate =
         (shouldUpdate && shouldUpdate.current) || defaultCompare;
 
@@ -29,15 +31,17 @@ const state: { [key: string]: any } = {};
 const stateInitialized: { [key: string]: boolean } = {};
 const subscribers: { [key: string]: Subscriber<any>[] } = {};
 
-const createSetState = <StateType>(
-    reducer: ReducerType<StateType> | undefined,
+const createSetState = <StateType, ActionTypes>(
+    reducer: ReducerType<StateType, ActionTypes> | undefined,
     stateRootId: string
-): StateUpdater<StateType> => (value: StateUpdate<StateType>): void => {
+): StateUpdater<StateType, ActionTypes> => (
+    value: StateUpdate<StateType, ActionTypes> | ActionTypes
+): void => {
     const stateRoot = state[stateRootId] || {};
     const previousState = { ...stateRoot } as StateType;
 
     const newState = reducer
-        ? reducer(previousState, value as BaseActionType)
+        ? reducer(previousState, value as ActionTypes)
         : { ...previousState, ...value };
 
     state[stateRootId] = newState;
@@ -45,9 +49,9 @@ const createSetState = <StateType>(
     subscribers[stateRootId].forEach(updateSubscriber(previousState, newState));
 };
 
-export const useGlobalState = <StateType extends object>(
-    options?: SubsriberOptions<StateType>
-): UseGlobalStateOutput<StateType> => {
+export const useGlobalState = <StateType, ActionTypes extends BaseActionType>(
+    options?: SubsriberOptions<StateType, ActionTypes>
+): UseGlobalStateOutput<StateType, ActionTypes> => {
     const [, render] = useReducer(s => !s, true);
     const { initialState, shouldUpdate, reducer } = options || {};
     const stateRootId = (options || {}).stateRootId || 'root';

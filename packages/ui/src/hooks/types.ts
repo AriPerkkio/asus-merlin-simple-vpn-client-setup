@@ -1,19 +1,20 @@
 import { MutableRefObject } from 'react';
-import { BaseActionType, ClientsState } from 'reducers/types';
 
-export type ReducerType<StateType> = (
+import { ClientsState } from 'reducers/types';
+
+export type ReducerType<StateType, ActionTypes> = (
     previousState: StateType,
-    action: BaseActionType
+    action: ActionTypes
 ) => StateType;
 
-export interface SubsriberOptions<StateType extends object> {
+export interface SubsriberOptions<StateType, ActionTypes> {
     stateRootId?: string;
     shouldUpdate?: ShouldUpdateType<StateType>;
     initialState?: StateType;
-    reducer?: ReducerType<StateType>;
+    reducer?: ReducerType<StateType, ActionTypes>;
 }
 
-export interface Subscriber<StateType extends object = {}> {
+export interface Subscriber<StateType> {
     render: React.Dispatch<void>;
     shouldUpdate?: MutableRefObject<ShouldUpdateType<StateType> | undefined>;
 }
@@ -23,15 +24,17 @@ type ShouldUpdateType<StateType> = (
     newState: StateType
 ) => boolean;
 
-export type StateUpdate<StateType> =
+export type StateUpdate<StateType, ActionTypes> =
     | { [PartOfState in keyof StateType]?: StateType[PartOfState] }
-    | BaseActionType;
+    | ActionTypes;
 
-export type StateUpdater<StateType> = (value: StateUpdate<StateType>) => void;
+export type StateUpdater<StateType, ActionTypes> = (
+    value: StateUpdate<StateType, ActionTypes>
+) => void;
 
-export type UseGlobalStateOutput<StateType> = [
+export type UseGlobalStateOutput<StateType, ActionTypes> = [
     StateType,
-    StateUpdater<StateType>
+    StateUpdater<StateType, ActionTypes>
 ];
 
 export interface UseClientsOutput extends ClientsState {
