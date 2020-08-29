@@ -1,4 +1,6 @@
-const vpnClients = [
+import { VPNClient, IPAddressInfo } from '@api/types';
+
+export const vpnClients: VPNClient[] = [
     {
         id: 1,
         name: 'Client Number One',
@@ -84,18 +86,17 @@ const vpnClients = [
     },
 ];
 
-const serverIpAddress = {
+export const routerIpAddress: IPAddressInfo = {
     ip: '11.11.111.111',
     dns: ['22.22.222.222', '33.33.333.333'],
 };
 
-const routerIpAddress = {
+export const serverIpAddress: IPAddressInfo = {
     ip: '44.44.444.444',
     dns: ['55.55.555.555', '66.66.666.666'],
 };
 
-module.exports = {
-    vpnClients,
-    serverIpAddress,
-    routerIpAddress,
+export const clientIpAddress: IPAddressInfo = {
+    ip: '77.77.777.777',
+    dns: ['88.88.888.888', '99.99.999.999'],
 };

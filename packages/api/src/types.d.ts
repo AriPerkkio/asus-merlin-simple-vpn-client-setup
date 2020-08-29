@@ -5,6 +5,7 @@ export type ConnectionState =
     | 'CONNECTING'
     | 'DISCONNECTED'
     | 'DISCONNECTING'
+    // TODO handle error case
     | 'UNKNOWN';
 
 export type ErrorType =

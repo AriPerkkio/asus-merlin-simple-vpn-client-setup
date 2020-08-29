@@ -3,7 +3,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const proxy = require('./src/setupProxy');
 
 const getPath = dir => path.resolve(__dirname, dir);
 
@@ -72,7 +71,6 @@ module.exports = (env, argv) => {
             disableHostCheck: true,
             noInfo: true,
             clientLogLevel: 'error',
-            before: proxy,
         },
     };
 };

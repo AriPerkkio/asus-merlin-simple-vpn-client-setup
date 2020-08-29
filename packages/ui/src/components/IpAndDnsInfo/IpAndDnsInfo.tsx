@@ -58,11 +58,19 @@ const IpInfo: React.FC<IpInfoState> = ({
     ipInfo,
 }: IpInfoState) => {
     if (isLoading) {
-        return <p className={`${BASE_CLASS}--loading`}>Loading...</p>;
+        return (
+            <p className={`${BASE_CLASS}--loading`} role='status'>
+                Loading...
+            </p>
+        );
     }
 
     if (error) {
-        return <p className={`${BASE_CLASS}--error`}>Failure</p>;
+        return (
+            <p className={`${BASE_CLASS}--error`} role='alert'>
+                Failure
+            </p>
+        );
     }
 
     const { ip, dns } = ipInfo || {};

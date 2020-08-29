@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { VPNClient, Client, ConnectionState } from '@api/types';
+import { VPNClient, Client } from '@api/types';
 
 import { useClients } from 'hooks/useClients';
 
@@ -23,7 +23,7 @@ const ClientList: React.FC = () => {
 
             {isLoading && (
                 <div className={`${BASE_CLASS}--loading`} role='alert'>
-                    Loading
+                    Loading...
                 </div>
             )}
 
@@ -61,7 +61,7 @@ const ClientListItem: React.FC<ClientListItemProps> = ({
     onActivate,
     onDeactivate,
 }: ClientListItemProps) => {
-    const isActivated = state === ('CONNECTED' as ConnectionState);
+    const isActivated = state === 'CONNECTED';
     const isLoading = state === 'CONNECTING' || state === 'DISCONNECTING';
 
     const buttonText = isActivated ? 'Deactivate' : 'Activate';
@@ -83,9 +83,7 @@ const ClientListItem: React.FC<ClientListItemProps> = ({
             </span>
             <button
                 disabled={isLoading}
-                onClick={(): void => {
-                    onClick(id);
-                }}
+                onClick={() => onClick(id)}
                 className={`${BASE_CLASS}-item-toggle`}
             >
                 {isLoading ? '...' : buttonText}
