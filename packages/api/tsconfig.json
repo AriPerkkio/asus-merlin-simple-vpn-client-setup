@@ -14,7 +14,7 @@
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "noImplicitAny": true,
-        "types": ["express", "body-parser", "node", "ssh2"]
+        "resolveJsonModule": true
     },
     "include": ["src"]
 }

@@ -1,4 +1,4 @@
-import { VPNClient, IPAddressInfo } from '@api/types';
+import { VPNClient, IPAddressInfo } from 'types';
 
 export const vpnClients: VPNClient[] = [
     {

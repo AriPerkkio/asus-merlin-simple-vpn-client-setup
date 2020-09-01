@@ -1,20 +1,22 @@
 {
-    "name": "asus-merlin-simple-vpn-client-setup",
-    "version": "1.0.0",
-    "description": "Simple VPN client setup for Asus Merlin",
-    "private": true,
-    "workspaces": [
-        "packages/api",
-        "packages/ui"
-    ],
-    "scripts": {
-        "postinstall": "./scripts/postinstall.sh",
-        "build": "./scripts/build.sh",
-        "start": "node build/index.js",
-        "pack-release": "./scripts/pack-release.sh"
-    },
-    "main": "index.js",
-    "repository": "https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup.git",
-    "author": "Ari Perkkio <ari.perkkio@gmail.com>",
-    "license": "MIT"
+  "name": "asus-merlin-simple-vpn-client-setup",
+  "version": "1.0.0",
+  "description": "Simple VPN client setup for Asus Merlin",
+  "private": true,
+  "workspaces": [
+    "packages/api",
+    "packages/ui"
+  ],
+  "scripts": {
+    "postinstall": "./scripts/postinstall.sh",
+    "build": "./scripts/build.sh",
+    "dev": "./scripts/start.sh",
+    "start": "node build/index.js",
+    "pack-release": "./scripts/pack-release.sh",
+    "test": "./scripts/test.sh"
+  },
+  "main": "index.js",
+  "repository": "https://github.com/AriPerkkio/asus-merlin-simple-vpn-client-setup.git",
+  "author": "Ari Perkkio <ari.perkkio@gmail.com>",
+  "license": "MIT"
 }

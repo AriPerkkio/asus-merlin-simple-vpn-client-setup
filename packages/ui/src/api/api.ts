@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { VPNClient, IPAddressInfo } from '@api/types';
-import IPLeakClient from '@api/ipleak-client';
+import IPLeakClient from '@api/clients/ipleak-client';
 
 const JSON_HEADERS = { headers: { Accept: 'application/json' } };
 

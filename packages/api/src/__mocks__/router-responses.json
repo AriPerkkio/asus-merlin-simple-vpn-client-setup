@@ -1,0 +1,20 @@
+{
+    "nvram get wan0_ipaddr": "11.11.111.111",
+    "nvram get wan0_dns1_x": "22.22.222.222",
+    "nvram get wan0_dns2_x": "33.33.333.333",
+    "nvram get vpn_client1_desc": "Client Number One",
+    "nvram get vpn_client1_state": "0",
+    "nvram get vpn_client1_clientlist": "<Device One>192.168.1.10>0.0.0.0>VPN",
+    "nvram get vpn_client2_desc": "Client Number Two, Extended Name",
+    "nvram get vpn_client2_state": "0",
+    "nvram get vpn_client2_clientlist": "<Device One>192.168.1.10>0.0.0.0>VPN",
+    "nvram get vpn_client3_desc": "Third Client",
+    "nvram get vpn_client3_state": "0",
+    "nvram get vpn_client3_clientlist": "<Device One>192.168.1.10>0.0.0.0>VPN",
+    "nvram get vpn_client4_desc": "Fourth Client, Extended name",
+    "nvram get vpn_client4_state": "2",
+    "nvram get vpn_client4_clientlist": "<Device Number Two>192.168.1.11>0.0.0.0>VPN",
+    "nvram get vpn_client5_desc": "Client Number Five",
+    "nvram get vpn_client5_state": "2",
+    "nvram get vpn_client5_clientlist": "<All IPs>192.168.1.2/24>0.0.0.0>VPN<Device number three>192.168.1.12>0.0.0.0>WAN<Device number four>192.168.1.13>0.0.0.0>WAN<Device number five>192.168.1.14>0.0.0.0>WAN"
+}

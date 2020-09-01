@@ -1,9 +1,10 @@
 import fetch from 'node-fetch';
 import { v4 as uuid } from 'uuid';
 
-import SSHClient from 'ssh-client';
-import IPLeakClient from 'ipleak-client';
-import { parseState, parseClients } from 'nvram-parser';
+import SSHClient from 'clients/ssh-client';
+import IPLeakClient from 'clients/ipleak-client';
+import { parseState, parseClients } from 'utils/nvram-parser';
+import * as NVRAM_COMMANDS from 'constants/nvram-commands';
 import { VPNClient, ErrorType, IPAddressInfo } from 'types';
 
 const MAX_ACTIVE_CLIENTS = 3;
@@ -40,9 +41,9 @@ class Api {
      */
     public async getRouterIP(): Promise<IPAddressInfo> {
         const [ip, dns1, dns2] = await this.sshClient.execute(
-            'nvram get wan0_ipaddr',
-            'nvram get wan0_dns1_x',
-            'nvram get wan0_dns2_x'
+            NVRAM_COMMANDS.GET_ROUTER_IP,
+            NVRAM_COMMANDS.GET_ROUTER_DNS_PRIMARY,
+            NVRAM_COMMANDS.GET_ROUTER_DNS_SECONDARY
         );
 
         return {
@@ -75,7 +76,7 @@ class Api {
             return 'ERROR_CLIENT_NOT_DISCONNECTED';
         }
 
-        await this.sshClient.execute(`service start_vpnclient${id}`);
+        await this.sshClient.execute(NVRAM_COMMANDS.ACTIVATE_VPN_CLIENT(id));
 
         for (let i = 0; i < POLL_COUNT; i++) {
             await waitPollInterval();
@@ -100,7 +101,7 @@ class Api {
             return 'ERROR_CLIENT_NOT_CONNECTED';
         }
 
-        await this.sshClient.execute(`service stop_vpnclient${id}`);
+        await this.sshClient.execute(NVRAM_COMMANDS.DEACTIVATE_VPN_CLIENT(id));
 
         for (let i = 0; i < POLL_COUNT; i++) {
             await waitPollInterval();
@@ -116,9 +117,9 @@ class Api {
 
     private async getVpnClientInfo(id: number): Promise<VPNClient> {
         const [name, state, clients] = await this.sshClient.execute(
-            `nvram get vpn_client${id}_desc`,
-            `nvram get vpn_client${id}_state`,
-            `nvram get vpn_client${id}_clientlist`
+            NVRAM_COMMANDS.GET_VPN_CLIENTS_DESCRIPTION(id),
+            NVRAM_COMMANDS.GET_VPN_CLIENTS_STATE(id),
+            NVRAM_COMMANDS.GET_VPN_CLIENTS_DEVICES(id)
         );
 
         return {

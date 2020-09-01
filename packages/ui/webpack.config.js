@@ -8,6 +8,7 @@ const getPath = dir => path.resolve(__dirname, dir);
 
 module.exports = (env, argv) => {
     const isProduction = argv.mode === 'production';
+    const isIntegration = argv.integration;
 
     return {
         mode: argv.mode || 'production',
@@ -71,6 +72,9 @@ module.exports = (env, argv) => {
             disableHostCheck: true,
             noInfo: true,
             clientLogLevel: 'error',
+            proxy: isIntegration
+                ? { '/api': 'http://localhost:3001' }
+                : undefined,
         },
     };
 };

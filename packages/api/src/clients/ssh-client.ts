@@ -1,6 +1,6 @@
 import { Client } from 'ssh2';
-import fs from 'fs';
 
+import { parseConfiguration } from 'utils/configuration-parser';
 import { SSHConfiguration } from 'types';
 
 const newlineRegex = /\n/g;
@@ -9,22 +9,7 @@ export default class SshClient {
     configuration: SSHConfiguration;
 
     constructor() {
-        const sshConfig: { [key: string]: string } = fs
-            .readFileSync('./ssh-config')
-            .toString()
-            .split('\n')
-            .reduce((conf, row) => {
-                const [key, value] = row.split('=');
-
-                return { ...conf, [key]: value };
-            }, {});
-
-        this.configuration = {
-            username: sshConfig.USERNAME,
-            host: sshConfig.HOST,
-            port: parseInt(sshConfig.PORT),
-            privateKey: fs.readFileSync('./ssh-key'),
-        };
+        this.configuration = parseConfiguration();
     }
 
     // TODO handle failures. Invalid IP seems to crash server

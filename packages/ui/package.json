@@ -55,6 +55,7 @@
     },
     "scripts": {
         "start": "webpack-dev-server --hot --mode=development",
+        "start:integration": "webpack-dev-server --hot --mode=none --integration",
         "build": "webpack --mode=production",
         "lint": "eslint src",
         "test": "jest --verbose",

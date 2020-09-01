@@ -2,7 +2,14 @@ import express from 'express';
 
 import Api from 'api';
 
-const app = express();
+if (process.env.NODE_ENV === 'development') {
+    /* eslint-disable @typescript-eslint/no-var-requires */
+    require('./__mocks__/ipleak').default.listen();
+    require('./__mocks__/router').default.listen();
+    /* eslint-enable @typescript-eslint/no-var-requires */
+}
+
+export const app = express();
 const port = 3001;
 
 const validateId = (id: number): { error: string } | undefined => {
@@ -75,4 +82,6 @@ app.get('/api/vpn-clients/:id/deactivate', (req, res) => {
         .catch(error => res.status(500).json(error));
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}!`));
+if (process.env.NODE_ENV !== 'test') {
+    app.listen(port, () => console.log(`Listening on port ${port}!`));
+}

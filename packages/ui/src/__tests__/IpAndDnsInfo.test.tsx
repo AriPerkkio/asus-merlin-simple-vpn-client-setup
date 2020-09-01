@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen, waitFor, cleanup } from '@testing-library/react';
 
 import IpAndDnsInfo from 'components/IpAndDnsInfo';
-import * as mockData from 'mocks/mock-data';
 import { getListByTitle, mockApiError, getNextToTitle } from '__test-helpers__';
+import * as mockData from '@api/__mocks__/data';
 
 async function waitForLoadersToFinish() {
     // All three loaders should appear

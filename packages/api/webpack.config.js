@@ -16,9 +16,10 @@ module.exports = (_, { mode }) => ({
     module: {
         rules: [
             {
-                test: /\.ts?$/,
-                use: 'ts-loader',
+                test: /\.(js|mjs|ts)$/,
+                include: [path.resolve('src')],
                 exclude: /node_modules/,
+                loader: 'babel-loader',
             },
         ],
     },

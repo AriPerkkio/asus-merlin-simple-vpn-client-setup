@@ -1,7 +1,7 @@
 import { rest, response as originalRes } from 'msw';
 
 import { res } from './res';
-import * as mockData from 'mocks/mock-data';
+import * as mockData from '@api/__mocks__/data';
 
 let clientDnsCounter = 0;
 

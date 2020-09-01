@@ -9,8 +9,8 @@ import {
 } from '@testing-library/react';
 
 import ClientList from 'components/ClientList';
-import * as mockData from 'mocks/mock-data';
 import { mockApiError } from '__test-helpers__';
+import * as mockData from '@api/__mocks__/data';
 import { VPNClient } from '@api/types';
 
 async function waitForLoadersToFinish() {
