@@ -31,6 +31,30 @@ PORT=
 $ sh -c "yarn start >> logs" &
 ```
 
+## Local development
+
+```sh
+# Run UI and API integration in watch mode
+# UI is available at localhost:3000
+# API is available at localhost:3001
+$ cd <project root>
+$ yarn dev
+
+# Run UI only with MSW mock data
+# UI is available at localhost:3000
+$ cd <project root>/packages/ui
+$ yarn start
+
+# Run API only with mock router (ssh server) and MSW
+# API is available at localhost:3001/api
+$ cd <project root>/packages/api
+$ yarn dev
+
+# Run tests
+$ cd <project root>
+$ yarn test
+```
+
 ## Building & packing release
 
 ```sh
