@@ -28,7 +28,7 @@ function readFiles(): { privateKey: Buffer; config: Buffer } {
         process.env.NODE_ENV === 'development' ||
         process.env.NODE_ENV === 'test';
 
-    const root = path.resolve(isTestOrDev ? './src/__mocks__/mock-' : './');
+    const root = isTestOrDev ? './src/__mocks__/mock-' : './';
 
     return {
         privateKey: fs.readFileSync(`${root}ssh-key`),
